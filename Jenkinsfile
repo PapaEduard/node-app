@@ -16,7 +16,7 @@ pipeline{
     stage('Build'){
       steps{
         script{
-          dockerimage=docker.build("${DOCKER_IMAGE}:${IMAGE_TAG}")
+          dockerimage=docker.build("${DOCKER_IMAGE}:${env.IMAGE_TAG}")
         }
       }
     }
@@ -32,7 +32,7 @@ pipeline{
         sh '''
         docker stop node-app || true
         docker rm node-app || true
-        docker run -d --name node-app -p 3000:3000 ${DOCKER_IMAGE}:${IMAGE_TAG}
+        docker run -d --name node-app -p 3000:3000 ${DOCKER_IMAGE}:${env.IMAGE_TAG}
         '''
       }
     }
