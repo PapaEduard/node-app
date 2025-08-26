@@ -22,7 +22,9 @@ pipeline{
     stage('Push to Docker Hab'){
       steps{
         script{
-          docker.withRegistry('https://registry.hub.docker.com','dockerhub-creds')
+          docker.withRegistry('https://registry.hub.docker.com','dockerhub-creds'){
+            dockerimage.push()
+          }
         }
       }
     }
