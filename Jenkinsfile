@@ -1,0 +1,40 @@
+pipeline{
+  agent any
+
+  environment{
+    DOCKER_HUB_CREDENTIALS=credentials('docker-hub-creds')
+    DOCKER_IMAGE='edy2010/node-app'
+    IMAGE_TAGE="latest"
+  }
+
+  stages{
+    stage('Checkout'){
+      steps{
+        checkout scm
+      }
+    }
+    stage('Build'){
+      steps{
+        script{
+          dockerimage=docker.build("${DOCKER_IMAGE}:${IMAGE_TAG}")
+        }
+      }
+    }
+    stage('Push to Docker Hab'){
+      steps{
+        script{
+          docker.withRegistry('https://','docker-hub-creds')
+        }
+      }
+    }
+    stage('Deploy'){
+      steps{
+        sh '''
+        docker stop node-app || true
+        docker rm node-app || true
+        docker run -d --name node-app -p 3000:3000 ${DOCKER_IMAGE}:${IMAGE_TAG}
+        '''
+      }
+    }
+  }
+}
