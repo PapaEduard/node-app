@@ -2,7 +2,7 @@ pipeline{
   agent any
 
   environment{
-    DOCKER_HUB_CREDENTIALS=credentials('dockerhub-credss')
+    DOCKER_HUB_CREDENTIALS='dockerhub-credss'
     DOCKER_IMAGE='edy2010/node-app'
     IMAGE_TAGE="latest"
   }
