@@ -2,9 +2,8 @@ pipeline{
   agent any
 
   environment{
-    DOCKER_HUB_CREDENTIALS='dockerhub-credss'
+    DOCKER_HUB_CREDENTIALS=credentials('dockerhub-credss')
     DOCKER_IMAGE='edy2010/node-app'
-    IMAGE_TAGE="latest"
   }
 
   stages{
@@ -16,14 +15,14 @@ pipeline{
     stage('Build'){
       steps{
         script{
-          dockerimage=docker.build("${DOCKER_IMAGE}:${env.IMAGE_TAG}")
+          dockerimage=docker.build("${env.DOCKER_IMAGE}:${BUILD_NUMBER}")
         }
       }
     }
     stage('Push to Docker Hab'){
       steps{
         script{
-          docker.withRegistry('https://registry.hub.docker.com','docker-hub-creds')
+          docker.withRegistry('https://registry.hub.docker.com','dockerhub-creds')
         }
       }
     }
