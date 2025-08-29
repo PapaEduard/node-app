@@ -3,7 +3,7 @@ pipeline{
 
   environment{
     REPO = 'edy2010/node-app'
-    DOCKER_TOKEN = credentials('dockerhub-creds')
+    DOCKER_TOKEN = credentials('dok-tok')
     PRJ_NAME = 'node-app'
   }
 
