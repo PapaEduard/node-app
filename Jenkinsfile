@@ -2,8 +2,9 @@ pipeline{
   agent any
 
   environment{
-    DOCKER_HUB_CREDENTIALS=credentials('dockerhub-creds')
-    DOCKER_IMAGE='edy2010/node-app'
+    REPO = 'edy2010/node-app'
+    DOCKER_TOKEN = credentials('dockerhub-creds')
+    PRJ_NAME = 'node-app'
   }
 
   stages{
@@ -15,15 +16,19 @@ pipeline{
     stage('Build'){
       steps{
         script{
-          dockerimage=docker.build("${env.DOCKER_IMAGE}:${env.BUILD_NUMBER}")
+          sh"""
+            docker build -t "${REPO}:${PRJ_NAME}-${BUILD_NUMBER}" .
+          """
         }
       }
     }
     stage('Push to Docker Hab'){
       steps{
         script{
-          docker.withRegistry('https://registry.hub.docker.com','dockerhub-creds'){
-            dockerimage.push()
+          sh"""
+            docker login -u edy2010 -p ${DOCKER_TOKEN}
+            docker push "${REPO}:${PRJ_NAME}-${BUILD_NUMBER}"
+          """
           }
         }
       }
@@ -31,9 +36,7 @@ pipeline{
     stage('Deploy'){
       steps{
         sh '''
-        docker stop node-app || true
-        docker rm node-app || true
-        docker run -d --name node-app -p 3000:3000 ${DOCKER_IMAGE}:${env.IMAGE_TAG}
+          
         '''
       }
     }
