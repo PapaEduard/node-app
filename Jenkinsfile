@@ -26,7 +26,7 @@ pipeline{
       steps{
         script{
           sh"""
-            docker login -u edy2010 -p ${DOCKER_TOKEN}
+            docker login -u Edy2010 -p ${DOCKER_TOKEN}
             docker push "${REPO}:${PRJ_NAME}-${BUILD_NUMBER}"
           """
           }
