@@ -4,7 +4,7 @@ pipeline{
   environment{
     REPO = 'edy2010/node-app'
     DOCKER_TOKEN = credentials('dok-tok')
-    PRJ_NAME = 'node-app'
+    PRJ_NAME = 'ed-node'
   }
 
   stages{
@@ -26,8 +26,8 @@ pipeline{
       steps{
         script{
           sh"""
-            docker login -u Edy2010 -p ${env.DOCKER_TOKEN}
-            docker push "${env.REPO}:${env.PRJ_NAME}-${env.BUILD_NUMBER}"
+            docker login -u edy2010 -p ${env.DOCKER_TOKEN}
+            docker push "${REPO}:${PRJ_NAME}-${env.BUILD_NUMBER}"
           """
           }
         }
